@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ödeme Sayfası</title>
+    <link rel="stylesheet" href="floating-icons.css" />
+    <link rel="stylesheet" href="css/card-icons.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/header.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ff4e50, #f9d423, #24c6dc, #5433ff);
+        background-size: 400% 400%;
+        animation: bgAnimation 10s ease infinite;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      @keyframes bgAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .payment-box {
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 4px solid rgba(255, 75, 92, 0.5);
+        border-radius: 25px;
+        padding: 30px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .payment-box h2 {
+        color: #ff4b5c;
+        margin-bottom: 20px;
+      }
+
+      .payment-box input,
+      .payment-box button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 10px;
+        border: none;
+        font-size: 16px;
+      }
+
+      .payment-box input {
+        background: #f2f2f2;
+      }
+
+      .payment-box button {
+        background: #ff4b5c;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
+      }
+
+      .payment-box button:hover {
+        background: #e04352;
+      }
+
+      .payment-box a {
+        display: block;
+        margin-top: 10px;
+        color: #666;
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .error-message {
+        color: #ff4b5c;
+        font-size: 14px;
+        margin: 10px 0;
+        display: none;
+      }
+
+      .loading {
+        position: relative;
+        opacity: 0.8;
+        cursor: not-allowed;
+      }
+
+      .loading::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        border: 2px solid #fff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: translateY(-50%) rotate(360deg);
+        }
+      }
+
+      .shake {
+        animation: shakeAnim 0.6s ease;
+      }
+
+      @keyframes shakeAnim {
+        0% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-8px);
+        }
+        50% {
+          transform: translateX(8px);
+        }
+        75% {
+          transform: translateX(-8px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .payment-methods {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .payment-method {
+        flex: 1;
+        min-width: 120px;
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .payment-method.active {
+        border-color: #ff4b5c;
+        background: rgba(255, 75, 92, 0.1);
+      }
+
+      .payment-method img,
+      .security-badge img {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 5px;
+      }
+
+      .payment-method svg,
+      .security-badge svg {
+        width: 24px;
+        height: 24px;
+        stroke: #666;
+        transition: stroke 0.3s;
+      }
+
+      .payment-method.active svg {
+        stroke: #ff4b5c;
+      }
+
+      .card-type-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .card-type-icon svg {
+        width: 30px;
+        height: 20px;
+        stroke: #666;
+      }
+
+      .security-badges {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .security-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .security-badge img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .card-input-group {
+        position: relative;
+      }
+
+      .card-input-group img {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 20px;
+      }
+
+      .card-type-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .input-error {
+        border: 1px solid #ff4b5c !important;
+      }
+
+      .form-section {
+        display: none;
+      }
+
+      .form-section.active {
+        display: block;
+      }
+
+      .progress-bar {
+        height: 4px;
+        background: #f2f2f2;
+        margin: 20px 0;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: #ff4b5c;
+        width: 0;
+        transition: width 0.3s ease;
+      }
+
+      .nav-links {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .nav-links a {
+        display: inline-block;
+        color: #666;
+        text-decoration: none;
+        margin: 0 10px;
+        padding: 5px 10px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        background: rgba(255, 75, 92, 0.1);
+        color: #ff4b5c;
+      }
+
+      .home-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .home-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .home-button i {
+        font-size: 1.8rem;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .payment-box {
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 4px solid rgba(255, 75, 92, 0.5);
+        border-radius: 25px;
+        padding: 30px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .payment-methods .payment-method {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .payment-methods .payment-method.active {
+        border-color: rgba(255, 75, 92, 0.8);
+        background: rgba(255, 75, 92, 0.1);
+      }
+
+      .form-section {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 20px;
+      }
+
+      .security-badges {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 15px;
+      }
+
+      .security-badge {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 8px 12px;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="index.html" class="home-button">
+      <i class="fas fa-home"></i>
+    </a>
+    <div class="payment-box">
+      <h2>Ödeme Sayfası</h2>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div id="error-message" class="error-message"></div>
+
+      <div class="payment-methods">
+        <div class="payment-method active" data-method="credit-card">
+          <object
+            data="icons/credit-card.svg"
+            type="image/svg+xml"
+            class="payment-icon"
+          ></object>
+          <p>Kredi Kartı</p>
+        </div>
+        <div class="payment-method" data-method="bank-transfer">
+          <object
+            data="icons/bank.svg"
+            type="image/svg+xml"
+            class="payment-icon"
+          ></object>
+          <p>Havale</p>
+        </div>
+        <div class="payment-method" data-method="cash-on-delivery">
+          <object
+            data="icons/cash.svg"
+            type="image/svg+xml"
+            class="payment-icon"
+          ></object>
+          <p>Kapıda Ödeme</p>
+        </div>
+      </div>
+
+      <div class="form-section active" id="credit-card-form">
+        <form id="payment-form">
+          <div class="card-input-group input-with-icon">
+            <input
+              type="text"
+              id="card-number"
+              placeholder="Kart Numarası"
+              maxlength="19"
+            />
+            <span class="card-type-icon"></span>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <input
+              type="text"
+              id="expiry-date"
+              placeholder="AA/YY"
+              maxlength="5"
+              style="flex: 1"
+            />
+            <input
+              type="text"
+              id="cvv"
+              placeholder="CVV"
+              maxlength="4"
+              style="flex: 1"
+            />
+          </div>
+          <input
+            type="text"
+            id="card-holder"
+            placeholder="Kart Üzerindeki İsim"
+          />
+          <button type="submit" onclick="window.location.href='order-confirmation.html'">Ödeme Yap</button>
+        </form>
+      </div>
+
+      <div class="form-section" id="bank-transfer-form">
+        <h3>Banka Hesap Bilgileri</h3>
+        <div style="text-align: left; margin: 20px 0">
+          <p><strong>Banka:</strong> Örnek Bank</p>
+          <p><strong>IBAN:</strong> TR12 3456 7890 1234 5678 9012 34</p>
+          <p><strong>Hesap Sahibi:</strong> Örnek A.Ş.</p>
+        </div>
+        <button onclick="window.location.href='order-confirmation.html'">Ödemeyi Onaylıyorum</button>
+      </div>
+
+      <div class="form-section" id="cash-on-delivery-form">
+        <h3>Kapıda Ödeme</h3>
+        <p style="margin: 20px 0">
+          Kapıda ödeme seçeneği için +10 TL hizmet bedeli eklenecektir.
+        </p>
+        <button onclick="window.location.href='order-confirmation.html'">Kapıda Ödemeyi Onayla</button>
+      </div>
+
+      <div class="security-badges">
+        <div class="security-badge">
+          <object data="icons/ssl.svg" type="image/svg+xml"></object>
+          <span>256-bit SSL</span>
+        </div>
+        <div class="security-badge">
+          <object data="icons/3d-secure.svg" type="image/svg+xml"></object>
+          <span>3D Secure</span>
+        </div>
+        <div class="security-badge">
+          <object data="icons/secure.svg" type="image/svg+xml"></object>
+          <span>Güvenli Ödeme</span>
+        </div>
+      </div>
+
+      
+
+    <script src="floating-icons.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+      const form = document.getElementById("payment-form");
+      const cardNumberInput = document.getElementById("card-number");
+      const expiryDateInput = document.getElementById("expiry-date");
+      const cvvInput = document.getElementById("cvv");
+      const cardHolderInput = document.getElementById("card-holder");
+      const errorMessage = document.getElementById("error-message");
+      const button = document.querySelector("button");
+
+      cardNumberInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        value = value.replace(/(\d{4})/g, "$1 ").trim();
+        e.target.value = value;
+
+        const cardType = detectCardType(value);
+        const cardTypeIcon = e.target.nextElementSibling;
+        cardTypeIcon.className = "card-type-icon";
+        if (cardType !== "unknown") {
+          cardTypeIcon.classList.add(cardType);
+        }
+
+        validateInput(cardNumberInput, validateCardNumber(value));
+      });
+
+      expiryDateInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length >= 2) {
+          value = value.slice(0, 2) + "/" + value.slice(2);
+        }
+        e.target.value = value;
+        validateInput(expiryDateInput, validateExpiryDate(value));
+      });
+
+      cvvInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        e.target.value = value;
+        validateInput(cvvInput, validateCVV(value));
+      });
+
+      cardHolderInput.addEventListener("input", (e) => {
+        validateInput(cardHolderInput, e.target.value.trim().length >= 3);
+      });
+
+      function validateInput(input, isValid) {
+        input.classList.toggle("input-error", !isValid);
+        return isValid;
+      }
+
+      const validateForm = () => {
+        let isValid = true;
+
+        if (
+          !validateCardNumber(cardNumberInput.value) ||
+          !validateLuhn(cardNumberInput.value)
+        ) {
+          showError("Geçersiz kart numarası.");
+          isValid = false;
+        }
+
+        if (!validateExpiryDate(expiryDateInput.value)) {
+          showError("Geçersiz son kullanma tarihi.");
+          isValid = false;
+        }
+
+        if (!validateCVV(cvvInput.value)) {
+          showError("Geçersiz CVV kodu.");
+          isValid = false;
+        }
+
+        if (!cardHolderInput.value.trim()) {
+          showError("Kart sahibi bilgisi gerekli.");
+          isValid = false;
+        }
+
+        return isValid;
+      };
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
+        const hideLoading = showLoading(button, "Ödeme yapılıyor...");
+
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+
+          const response = await makeRequest("/api/payment", {
+            method: "POST",
+            body: JSON.stringify({
+              cardNumber: cardNumberInput.value.replace(/\s/g, ""),
+              expiryDate: expiryDateInput.value,
+              cvv: cvvInput.value,
+              cardHolder: cardHolderInput.value,
+              method: "credit-card",
+            }),
+          });
+
+          window.location.href = "order-confirmation.html";
+        } catch (error) {
+          showError(
+            "Ödeme işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin."
+          );
+        } finally {
+          hideLoading();
+        }
+      });
+
+      function showError(message) {
+        errorMessage.innerText = message;
+        errorMessage.style.display = "block";
+        form.classList.add("shake");
+        setTimeout(() => {
+          form.classList.remove("shake");
+        }, 600);
+      }
+
+      function validateLuhn(cardNumber) {
+        const digits = cardNumber.replace(/\D/g, "");
+        let sum = 0;
+        let isEven = false;
+
+        for (let i = digits.length - 1; i >= 0; i--) {
+          let digit = parseInt(digits[i]);
+
+          if (isEven) {
+            digit *= 2;
+            if (digit > 9) {
+              digit -= 9;
+            }
+          }
+
+          sum += digit;
+          isEven = !isEven;
+        }
+
+        return sum % 10 === 0;
+      }
+
+      function detectCardType(cardNumber) {
+        const patterns = {
+          visa: /^4/,
+          mastercard: /^5[1-5]/,
+          amex: /^3[47]/,
+        };
+
+        cardNumber = cardNumber.replace(/\D/g, "");
+
+        for (let [type, pattern] of Object.entries(patterns)) {
+          if (pattern.test(cardNumber)) {
+            return type;
+          }
+        }
+
+        return "unknown";
+      }
+
+      document.querySelectorAll(".payment-method").forEach((method) => {
+        method.addEventListener("click", () => {
+          document
+            .querySelectorAll(".payment-method")
+            .forEach((m) => m.classList.remove("active"));
+          document
+            .querySelectorAll(".form-section")
+            .forEach((f) => f.classList.remove("active"));
+
+          method.classList.add("active");
+          document
+            .getElementById(`${method.dataset.method}-form`)
+            .classList.add("active");
+
+          updateProgressBar();
+        });
+      });
+
+      async function confirmBankTransfer() {
+        const hideLoading = showLoading(event.target, "İşleminiz yapılıyor...");
+        try {
+          await makeRequest("/api/payment", {
+            method: "POST",
+            body: JSON.stringify({
+              method: "bank-transfer",
+            }),
+          });
+          window.location.href = "order-confirmation.html";
+        } catch (error) {
+          showError("İşlem sırasında bir hata oluştu.");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      async function confirmCashOnDelivery() {
+        const hideLoading = showLoading(event.target, "İşleminiz yapılıyor...");
+        try {
+          await makeRequest("/api/payment", {
+            method: "POST",
+            body: JSON.stringify({
+              method: "cash-on-delivery",
+            }),
+          });
+          window.location.href = "order-confirmation.html";
+        } catch (error) {
+          showError("İşlem sırasında bir hata oluştu.");
+        } finally {
+          hideLoading();
+        }
+      }
+
+      function updateProgressBar() {
+        const progress = document.getElementById("progress-fill");
+        progress.style.width = "100%";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateProgressBar();
+      });
+    </script>
+  </body>
+</html>

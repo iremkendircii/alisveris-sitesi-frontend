@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kayıt Ol | E-Ticaret</title>
+    <link rel="stylesheet" href="floating-icons.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Preload critical resources -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      as="style"
+    />
+    <link rel="preload" href="css/header.css" as="style" />
+    <link rel="preload" href="js/utils.js" as="script" />
+
+    <!-- Stylesheets -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link rel="stylesheet" href="css/header.css" />
+    
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ff4e50, #f9d423, #24c6dc, #5433ff);
+        background-size: 400% 400%;
+        animation: bgAnimation 15s ease infinite;
+        font-family: "Poppins", sans-serif;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @keyframes bgAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .register-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .register-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .form-group input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .register-button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #ff4b5c, #ff3547);
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .register-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 75, 92, 0.4);
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .login-link a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      .error-message {
+        color: #ff4b5c;
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        backdrop-filter: blur(5px);
+      }
+
+      .back-button img {
+        width: 20px;
+        height: 20px;
+        filter: brightness(0) invert(1);
+      }
+
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    
+
+    <div class="register-container">
+      <h1 class="register-title">Kayıt Ol</h1>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="name">Ad Soyad</label>
+          <input type="text" id="name" name="name" placeholder="Adınız ve soyadınız" required>
+          <div class="error-message" id="nameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-posta</label>
+          <input type="email" id="email" name="email" placeholder="E-posta adresiniz" required>
+          <div class="error-message" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Telefon</label>
+          <input type="tel" id="phone" name="phone" placeholder="Telefon numaranız" required>
+          <div class="error-message" id="phoneError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="birthDate">Doğum Tarihi</label>
+          <input type="date" id="birthDate" name="birthDate" required>
+          <div class="error-message" id="birthDateError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Şifre</label>
+          <input type="password" id="password" name="password" placeholder="Şifreniz" required>
+          <div class="error-message" id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Şifre Tekrar</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin" required>
+          <div class="error-message" id="confirmPasswordError"></div>
+        </div>
+
+        <button type="submit" class="register-button">Kayıt Ol</button>
+      </form>
+
+      <div class="login-link">
+        Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
+      </div>
+    </div>
+    
+    <div class="floating-icons-container" id="floatingContainer"></div>
+  <script src="floating-icons.js"></script>
+
+    <script>
+      document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const birthDate = document.getElementById('birthDate').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+        let isValid = true;
+
+        if (name.length < 3) {
+          document.getElementById('nameError').textContent = 'Ad soyad en az 3 karakter olmalıdır';
+          document.getElementById('nameError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (!email.includes('@')) {
+          document.getElementById('emailError').textContent = 'Geçerli bir e-posta adresi giriniz';
+          document.getElementById('emailError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (phone.length < 10) {
+          document.getElementById('phoneError').textContent = 'Geçerli bir telefon numarası giriniz';
+          document.getElementById('phoneError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (!birthDate) {
+          document.getElementById('birthDateError').textContent = 'Doğum tarihi gereklidir';
+          document.getElementById('birthDateError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (password.length < 6) {
+          document.getElementById('passwordError').textContent = 'Şifre en az 6 karakter olmalıdır';
+          document.getElementById('passwordError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (password !== confirmPassword) {
+          document.getElementById('confirmPasswordError').textContent = 'Şifreler eşleşmiyor';
+          document.getElementById('confirmPasswordError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (isValid) {
+          localStorage.setItem('userName', name);
+          localStorage.setItem('userEmail', email);
+          localStorage.setItem('userPhone', phone);
+          localStorage.setItem('userBirthDate', birthDate);
+          localStorage.setItem('userPassword', password);
+
+          alert('Kayıt işlemi başarılı! Giriş yapabilirsiniz.');
+          
+          setTimeout(() => {
+            window.location.href = "homePage.html";
+          }, 1500);
+        }
+      });
+    </script>
+  </body>
+</html> 

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Favorilerim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #5433ff, #20bdff, #a5fecb);
+      background-size: 400% 400%;
+      animation: bgAnim 12s ease infinite;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    @keyframes bgAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: rgba(255,255,255,0.1);
+      backdrop-filter: blur(6px);
+      position: relative;
+    }
+
+    .header-icons {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-icons .icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    .header-icons .badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background-color: #ff4b5c;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+
+    .favorites-container {
+      flex-grow: 1;
+      padding: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .favorite-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .item-info img {
+      width: 60px;
+      border-radius: 8px;
+    }
+
+    .item-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: none;
+      background-color: #ff416c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .empty-message {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 50px;
+      color: #eee;
+    }
+
+    .actions {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .back-button img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .home-button img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .home-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <a href="homePage.html" class="home-button">
+    <img src="icons/homePages.png" alt="Ana Sayfa">
+    Ana Sayfa
+  </a>
+
+  <header>
+    Favorilerim
+    <div class="header-icons">
+      <div class="icon" onclick="goToProfile()">👤</div>
+      <div class="icon" onclick="goToCart()">
+        🛒 <span class="badge" id="cartCount">0</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="favorites-container" id="favoritesContainer">
+  </div>
+
+  <footer>&copy; 2025 Alışveriş Paneli | Tüm hakları saklıdır.</footer>
+
+  <script>
+    const favoritesContainer = document.getElementById("favoritesContainer");
+
+    const urunVerileri = {
+      "örnek-ürün": {
+        ad: "Örnek Ürün Adı",
+        fiyat: 149.99,
+        img: "./icons/box.png"
+      }
+    };
+
+    function renderFavorites() {
+      const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      favoritesContainer.innerHTML = "";
+
+      if (favorites.length === 0) {
+        favoritesContainer.innerHTML = `<div class="empty-message">Favori ürününüz yok.</div>`;
+        return;
+      }
+
+      favorites.forEach(id => {
+        const urun = urunVerileri[id];
+        if (!urun) return;
+
+        const item = document.createElement("div");
+        item.className = "favorite-item";
+        item.innerHTML = `
+          <div class="item-info">
+            <img src="${urun.img}" alt="${urun.ad}">
+            <div>
+              <div class="item-name">${urun.ad}</div>
+              <div>₺${urun.fiyat.toFixed(2)}</div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn" onclick="addToCart('${id}')">Sepete Ekle</button>
+            <button class="btn" onclick="removeFromFavorites('${id}')">Kaldır</button>
+          </div>
+        `;
+        favoritesContainer.appendChild(item);
+      });
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      actions.innerHTML = `
+        <button class="btn" onclick="clearFavorites()">Favorileri Temizle</button>
+      `;
+      favoritesContainer.appendChild(actions);
+    }
+
+    function addToCart(urunId) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push(urunId);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      alert("Ürün sepete eklendi!");
+    }
+
+    function removeFromFavorites(urunId) {
+      let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+      favorites = favorites.filter(id => id !== urunId);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      renderFavorites();
+    }
+
+    function clearFavorites() {
+      if (confirm("Tüm favorileri silmek istiyor musunuz?")) {
+        localStorage.removeItem("favorites");
+        renderFavorites();
+      }
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const count = cart.length;
+      const badge = document.getElementById("cartCount");
+      if (badge) badge.innerText = count;
+    }
+
+    function goToCart() {
+      window.location.href = "cart.html";
+    }
+
+    function goToProfile() {
+      window.location.href = "profile.html";
+    }
+
+    window.onload = function () {
+      renderFavorites();
+      updateCartCount();
+    };
+  </script>
+</body>
+</html>

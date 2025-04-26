@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sipariş Onayı</title>
+    <link rel="stylesheet" href="floating-icons.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/header.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ff4e50, #f9d423, #24c6dc, #5433ff);
+        background-size: 400% 400%;
+        animation: bgAnimation 10s ease infinite;
+        font-family: "Poppins", sans-serif;
+        color: #333;
+      }
+
+      @keyframes bgAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .confirmation-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      .success-banner {
+        background: rgba(40, 167, 69, 0.2);
+        backdrop-filter: blur(10px);
+        color: white;
+        text-align: center;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+      }
+
+      .success-banner h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .success-banner p {
+        margin: 10px 0 0;
+        opacity: 0.9;
+      }
+
+      .order-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .order-card-header {
+        background: rgba(248, 249, 250, 0.1);
+        backdrop-filter: blur(5px);
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(238, 238, 238, 0.2);
+      }
+
+      .order-card-header h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .order-card-body {
+        padding: 20px;
+      }
+
+      .product-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .product-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .product-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-right: 15px;
+      }
+
+      .product-details {
+        flex: 1;
+      }
+
+      .product-name {
+        margin: 0 0 5px;
+        font-weight: 600;
+      }
+
+      .product-quantity {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .product-price {
+        font-weight: 600;
+        color: #333;
+        text-align: right;
+      }
+
+      .order-summary {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        color: #666;
+      }
+
+      .summary-row.total {
+        color: #333;
+        font-weight: 600;
+        font-size: 18px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 2px solid #eee;
+      }
+
+      .shipping-info {
+        background: rgba(248, 249, 250, 0.1);
+        backdrop-filter: blur(5px);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .shipping-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .shipping-icon {
+        margin-right: 10px;
+        color: #28a745;
+      }
+
+      .tracking-info {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        backdrop-filter: blur(5px);
+        transition: all 0.3s;
+      }
+
+      .btn-primary {
+        background: rgba(0, 123, 255, 0.8);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: rgba(108, 117, 125, 0.8);
+        color: white;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        opacity: 0.9;
+      }
+
+      @media (max-width: 768px) {
+        .confirmation-container {
+          margin: 20px auto;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+
+      /* Header Icons Styles */
+      .header-icons {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 99;
+      }
+
+      .header-icons .icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+      }
+
+      .header-icons .badge {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background-color: #ff4b5c;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+      }
+
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .back-button img {
+        width: 20px;
+        height: 20px;
+        filter: brightness(0) invert(1);
+      }
+
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <a href="homePage.html" class="back-button">
+        <img src="icons/homePages.png" alt="Ana Sayfa">
+        Ana Sayfa
+    </a>
+    
+    <div class="header-icons">
+        <div class="icon" onclick="goToProfile()">👤</div>
+        <div class="icon" onclick="goToFavorites()">❤️</div>
+        <div class="icon" onclick="goToCart()">🛒<span class="badge" id="cartCount">0</span></div>
+    </div>
+
+    <div class="confirmation-container">
+      <div class="success-banner">
+        <h1>🎉 Siparişiniz Başarıyla Oluşturuldu!</h1>
+        <p>
+          Siparişiniz için teşekkür ederiz. Siparişinizi hazırlamaya başladık.
+        </p>
+      </div>
+
+      <div class="order-card">
+        <div class="order-card-header">
+          <h2>Sipariş Detayları</h2>
+        </div>
+        <div class="order-card-body">
+          <div id="order-info">
+            <p>
+              <strong>Sipariş Numarası:</strong> <span id="order-number"></span>
+            </p>
+            <p>
+              <strong>Sipariş Tarihi:</strong> <span id="order-date"></span>
+            </p>
+          </div>
+
+          <ul class="product-list" id="product-list">
+            <!-- Ürünler dinamik olarak eklenecek -->
+          </ul>
+
+          <div class="order-summary">
+            <div class="summary-row">
+              <span>Ara Toplam</span>
+              <span id="subtotal"></span>
+            </div>
+            <div class="summary-row">
+              <span>Kargo</span>
+              <span id="shipping-cost"></span>
+            </div>
+            <div class="summary-row">
+              <span>KDV (%18)</span>
+              <span id="tax"></span>
+            </div>
+            <div class="summary-row total">
+              <span>Toplam</span>
+              <span id="total"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="shipping-info">
+        <div class="shipping-header">
+          <div class="shipping-icon">📦</div>
+          <h2>Teslimat Bilgileri</h2>
+        </div>
+        <div id="delivery-address">
+          <!-- Teslimat adresi dinamik olarak eklenecek -->
+        </div>
+        <div class="tracking-info">
+          <p>
+            <strong>Tahmini Teslimat:</strong>
+            <span id="estimated-delivery"></span>
+          </p>
+          <p><strong>Kargo Firması:</strong> <span id="courier"></span></p>
+          <p>
+            <strong>Takip Numarası:</strong> <span id="tracking-number"></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <a href="order.html" class="btn btn-primary">Siparişlerimi Görüntüle</a>
+        <a href="index.html" class="btn btn-secondary">Alışverişe Devam Et</a>
+      </div>
+    </div>
+
+    <script src="floating-icons.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+      // Kısayol fonksiyonları
+      function goToProfile() {
+        window.location.href = "profile.html";
+      }
+
+      function goToFavorites() {
+        window.location.href = "favorites.html";
+      }
+
+      function goToCart() {
+        window.location.href = "cart.html";
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const count = cart.length;
+        const badge = document.getElementById("cartCount");
+        if (badge) badge.innerText = count;
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        updateCartCount(); 
+        try {
+          const orderData = {
+            orderNumber: generateOrderNumber(),
+            orderDate: new Date().toLocaleDateString("tr-TR"),
+            products: JSON.parse(localStorage.getItem("cart")) || [],
+            shipping: {
+              courier: "Hızlı Kargo",
+              trackingNumber:
+                "TR" + Math.random().toString(36).substr(2, 9).toUpperCase(),
+              estimatedDelivery: new Date(
+                Date.now() + 3 * 24 * 60 * 60 * 1000
+              ).toLocaleDateString("tr-TR"),
+            },
+            deliveryAddress: JSON.parse(
+              localStorage.getItem("deliveryAddress")
+            ) || {
+              name: "John Doe",
+              address: "Örnek Mahallesi, Örnek Sokak No:1",
+              city: "İstanbul",
+              phone: "+90 555 123 4567",
+            },
+          };
+
+          document.getElementById("order-number").textContent =
+            orderData.orderNumber;
+          document.getElementById("order-date").textContent =
+            orderData.orderDate;
+
+          const productList = document.getElementById("product-list");
+          let subtotal = 0;
+
+          orderData.products.forEach((product) => {
+            const total = product.price * product.quantity;
+            subtotal += total;
+
+            productList.innerHTML += `
+              <li class="product-item">
+                <img src="${product.image || "placeholder.jpg"}" alt="${
+              product.name
+            }" class="product-image">
+                <div class="product-details">
+                  <h3 class="product-name">${product.name}</h3>
+                  <p class="product-quantity">Adet: ${product.quantity}</p>
+                </div>
+                <div class="product-price">${total.toFixed(2)} TL</div>
+              </li>
+            `;
+          });
+
+          const shippingCost = 29.9;
+          const tax = subtotal * 0.18;
+          const total = subtotal + shippingCost + tax;
+
+          document.getElementById("subtotal").textContent =
+            subtotal.toFixed(2) + " TL";
+          document.getElementById("shipping-cost").textContent =
+            shippingCost.toFixed(2) + " TL";
+          document.getElementById("tax").textContent = tax.toFixed(2) + " TL";
+          document.getElementById("total").textContent =
+            total.toFixed(2) + " TL";
+
+          const deliveryAddress = document.getElementById("delivery-address");
+          deliveryAddress.innerHTML = `
+            <p><strong>${orderData.deliveryAddress.name}</strong></p>
+            <p>${orderData.deliveryAddress.address}</p>
+            <p>${orderData.deliveryAddress.city}</p>
+            <p>${orderData.deliveryAddress.phone}</p>
+          `;
+
+          document.getElementById("estimated-delivery").textContent =
+            orderData.shipping.estimatedDelivery;
+          document.getElementById("courier").textContent =
+            orderData.shipping.courier;
+          document.getElementById("tracking-number").textContent =
+            orderData.shipping.trackingNumber;
+
+          const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+          orders.push({
+            id: orderData.orderNumber,
+            date: orderData.orderDate,
+            total: total.toFixed(2),
+            status: "Hazırlanıyor",
+            products: orderData.products,
+          });
+          localStorage.setItem("orders", JSON.stringify(orders));
+
+          localStorage.removeItem("cart");
+        } catch (error) {
+          console.error("Sipariş bilgileri yüklenirken hata:", error);
+        }
+      });
+
+      function generateOrderNumber() {
+        const date = new Date();
+        const year = date.getFullYear().toString().slice(-2);
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        const random = Math.floor(Math.random() * 10000)
+          .toString()
+          .padStart(4, "0");
+        return `SP${year}${month}${day}${random}`;
+      }
+    </script>
+  </body>
+</html>

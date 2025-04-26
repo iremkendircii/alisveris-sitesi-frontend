@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sepetim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f9d423, #24c6dc, #5433ff);
+      background-size: 400% 400%;
+      animation: bgAnim 12s ease infinite;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    @keyframes bgAnim {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: rgba(255,255,255,0.1);
+      backdrop-filter: blur(6px);
+    }
+
+    .cart-container {
+      flex-grow: 1;
+      padding: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .item-info img {
+      width: 60px;
+      border-radius: 8px;
+    }
+
+    .item-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-controls button {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background-color: #ff4b5c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .actions {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .actions button {
+      background-color: #ff416c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .empty-message {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 50px;
+      color: #eee;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .back-button img {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <a href="homePage.html" class="back-button">
+    <img src="icons/homePages.png" alt="Ana Sayfa">
+    Ana Sayfa
+  </a>
+
+  <header>Sepetim</header>
+
+  <div class="cart-container" id="cartContainer">
+  </div>
+
+  <footer>&copy; 2025 Alışveriş Paneli | Tüm hakları saklıdır.</footer>
+
+  <script>
+    const cartContainer = document.getElementById("cartContainer");
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const urunVerileri = {
+      "örnek-ürün": {
+        ad: "Örnek Ürün Adı",
+        fiyat: 149.99,
+        img: "./icons/box.png"
+      },
+    };
+
+    function renderCart() {
+      cartContainer.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = `<div class="empty-message">Sepetiniz boş.</div>`;
+        return;
+      }
+
+      let toplamFiyat = 0;
+
+      const adetMap = {};
+
+      cart.forEach(item => {
+        adetMap[item] = (adetMap[item] || 0) + 1;
+      });
+
+      for (const [key, adet] of Object.entries(adetMap)) {
+        const urun = urunVerileri[key];
+        const toplam = urun.fiyat * adet;
+        toplamFiyat += toplam;
+
+        const item = document.createElement("div");
+        item.className = "cart-item";
+        item.innerHTML = `
+          <div class="item-info">
+            <img src="${urun.img}" alt="${urun.ad}">
+            <div>
+              <div class="item-name">${urun.ad}</div>
+              <div>₺${urun.fiyat.toFixed(2)} x ${adet} = <strong>₺${toplam.toFixed(2)}</strong></div>
+            </div>
+          </div>
+          <div class="quantity-controls">
+            <button onclick="changeQty('${key}', -1)">-</button>
+            <span>${adet}</span>
+            <button onclick="changeQty('${key}', 1)">+</button>
+            <button class="remove-btn" onclick="removeItem('${key}')">Sil</button>
+          </div>
+        `;
+        cartContainer.appendChild(item);
+      }
+
+      const total = document.createElement("div");
+      total.className = "total";
+      total.innerText = `Toplam: ₺${toplamFiyat.toFixed(2)}`;
+      cartContainer.appendChild(total);
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      actions.innerHTML = `
+        <button onclick="clearCart()">Sepeti Temizle</button>
+        <button onclick="checkout()">Satın Al</button>
+      `;
+      cartContainer.appendChild(actions);
+    }
+
+    function changeQty(urunId, delta) {
+      if (delta === 1) {
+        cart.push(urunId);
+      } else {
+        const index = cart.indexOf(urunId);
+        if (index !== -1) cart.splice(index, 1);
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeItem(urunId) {
+      cart = cart.filter(id => id !== urunId);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function clearCart() {
+      if (confirm("Sepeti tamamen temizlemek istiyor musunuz?")) {
+        cart = [];
+        localStorage.removeItem("cart");
+        renderCart();
+      }
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Sepetiniz boş!');
+        return;
+      }
+      window.location.href = 'payment.html';
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>

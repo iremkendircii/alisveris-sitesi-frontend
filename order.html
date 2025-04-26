@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sipariş Sayfası</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ff4e50, #f9d423, #24c6dc, #5433ff);
+        background-size: 400% 400%;
+        animation: bgAnimation 10s ease infinite;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px;
+      }
+
+      .header-icons {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 99;
+      }
+
+      .header-icons .icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+      }
+
+      .header-icons .badge {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background-color: #ff4b5c;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+      }
+
+      .home-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .home-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .home-button img {
+        width: 20px;
+        height: 20px;
+        filter: brightness(0) invert(1);
+      }
+
+      @keyframes bgAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .order-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .order-box {
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 4px solid rgba(255, 75, 92, 0.5);
+        border-radius: 25px;
+        padding: 30px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .order-box h2 {
+        color: #ff4b5c;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .order-list {
+        margin-bottom: 30px;
+      }
+
+      .order-item {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+      }
+
+      .order-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .order-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .status-pending {
+        background: #ffe08a;
+        color: #946c00;
+      }
+      .status-processing {
+        background: #8ae9ff;
+        color: #006c8f;
+      }
+      .status-shipped {
+        background: #a8ff8a;
+        color: #006c1f;
+      }
+      .status-delivered {
+        background: #8aff9d;
+        color: #006c2f;
+      }
+      .status-cancelled {
+        background: #ff8a8a;
+        color: #6c0000;
+      }
+      .status-returned {
+        background: #d68aff;
+        color: #4c006c;
+      }
+
+      .order-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .order-info {
+        flex: 2;
+        min-width: 300px;
+        background-color: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      .product-list {
+        margin: 15px 0;
+      }
+
+      .product-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .product-info {
+        flex: 1;
+      }
+
+      .product-price {
+        font-weight: bold;
+        margin-left: 20px;
+      }
+
+      .shipping-info {
+        flex: 1;
+        min-width: 250px;
+        background-color: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      .action-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .action-button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      .primary-button {
+        background: #ff4b5c;
+        color: white;
+      }
+
+      .secondary-button {
+        background: #f2f2f2;
+        color: #666;
+      }
+
+      .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .order-summary {
+        margin-top: 15px;
+        text-align: right;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        padding: 30px;
+        border-radius: 15px;
+        max-width: 500px;
+        width: 90%;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .close-button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+      }
+
+      .return-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        resize: vertical;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        color: #333;
+      }
+
+      .tracking-steps {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+        position: relative;
+      }
+
+      .tracking-line {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 1;
+      }
+
+      .tracking-progress {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        height: 3px;
+        background: #ff4b5c;
+        z-index: 2;
+        transition: width 0.3s ease;
+      }
+
+      .step {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+      }
+
+      .step-dot {
+        width: 20px;
+        height: 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        margin: 15px auto;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .step-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .step.completed .step-dot {
+        border-color: #ff4b5c;
+        background-color: #ff4b5c;
+      }
+
+      .step.completed .step-label {
+        color: #ff4b5c;
+        font-weight: 600;
+      }
+
+      .step:not(.completed) .step-dot {
+        border-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .step:not(.completed) .step-label {
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      @media (max-width: 768px) {
+        .order-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .tracking-steps {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
+        }
+
+        .tracking-line {
+          width: 3px;
+          height: 100%;
+          left: 25px;
+          top: 0;
+        }
+
+        .tracking-progress {
+          width: 3px;
+          height: 0%;
+          left: 25px;
+          top: 0;
+        }
+
+        .step {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .step-dot {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="homePage.html" class="home-button">
+      <img src="icons/homePages.png" alt="Ana Sayfa">
+      Ana Sayfa
+    </a>
+
+    <div class="header-icons">
+        <div class="icon" onclick="goToProfile()">👤</div>
+        <div class="icon" onclick="goToFavorites()">❤️</div>
+        <div class="icon" onclick="goToCart()">🛒<span class="badge" id="cartCount">0</span></div>
+    </div>
+
+    <div class="order-container">
+      <div class="order-box">
+        <h2>Siparişlerim</h2>
+        <div id="order-list" class="order-list">
+        </div>
+      </div>
+    </div>
+
+    <div id="return-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Sipariş İptal/İade Talebi</h3>
+          <button class="close-button" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="return-form">
+          <select
+            id="return-reason"
+            style="
+              width: 100%;
+              padding: 10px;
+              margin: 10px 0;
+              border-radius: 5px;
+            "
+          >
+            <option value="">Sebep Seçin</option>
+            <option value="wrong-product">Yanlış Ürün</option>
+            <option value="damaged">Hasarlı Ürün</option>
+            <option value="size-issue">Beden/Ölçü Sorunu</option>
+            <option value="not-as-described">
+              Ürün Tanıtıldığı Gibi Değil
+            </option>
+            <option value="change-mind">Fikir Değişikliği</option>
+            <option value="other">Diğer</option>
+          </select>
+          <textarea
+            id="return-details"
+            rows="4"
+            placeholder="Detaylı açıklama yazın..."
+          ></textarea>
+          <div class="action-buttons">
+            <button
+              class="action-button secondary-button"
+              onclick="closeModal()"
+            >
+              İptal
+            </button>
+            <button
+              class="action-button primary-button"
+              onclick="submitReturn()"
+            >
+              Gönder
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function goToProfile() {
+        window.location.href = "profile.html";
+      }
+
+      function goToFavorites() {
+        window.location.href = "favorites.html";
+      }
+
+      function goToCart() {
+        window.location.href = "cart.html";
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const count = cart.length;
+        const badge = document.getElementById("cartCount");
+        if (badge) badge.innerText = count;
+      }
+
+      let orders = (JSON.parse(localStorage.getItem("orders")) || []).slice(0, 3);
+
+      const orderStatuses = {
+        pending: { class: "status-pending", text: "Onay Bekliyor" },
+        processing: { class: "status-processing", text: "Hazırlanıyor" },
+        shipped: { class: "status-shipped", text: "Kargoya Verildi" },
+        delivered: { class: "status-delivered", text: "Teslim Edildi" },
+        cancelled: { class: "status-cancelled", text: "İptal Edildi" },
+        returned: { class: "status-returned", text: "İade Edildi" },
+      };
+
+      function renderOrders() {
+        const orderList = document.getElementById("order-list");
+        orderList.innerHTML = orders.length
+          ? orders
+              .map(
+                (order, index) => `
+        <div class="order-item">
+          <div class="order-header">
+            <div>
+              <strong>Sipariş No:</strong> ${order.id}<br>
+              <small>Tarih: ${order.date}</small>
+            </div>
+            <span class="order-status ${
+              orderStatuses[order.status.toLowerCase()]?.class ||
+              "status-pending"
+            }">
+              ${orderStatuses[order.status.toLowerCase()]?.text || order.status}
+            </span>
+          </div>
+          
+          <div class="order-details">
+            <div class="order-info">
+              <div class="product-list">
+                ${order.products
+                  .map(
+                    (product) => `
+                  <div class="product-item">
+                    <div class="product-info">
+                      <strong>${product.name}</strong>
+                      <div>Adet: ${product.quantity}</div>
+                    </div>
+                    <div class="product-price">${(
+                      product.price * product.quantity
+                    ).toFixed(2)} TL</div>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+              
+              <div class="order-summary">
+                <p><strong>Ara Toplam:</strong> ${calculateSubtotal(
+                  order.products
+                ).toFixed(2)} TL</p>
+                <p><strong>Kargo:</strong> ${order.shipping || "29.90"} TL</p>
+                <p><strong>Toplam:</strong> ${order.total} TL</p>
+              </div>
+            </div>
+
+            <div class="shipping-info">
+              <h4>Kargo Bilgileri</h4>
+              <p><strong>Kargo Firması:</strong> ${
+                order.shipping_company || "Örnek Kargo"
+              }</p>
+              <p><strong>Takip No:</strong> ${
+                order.tracking_number || "Henüz oluşturulmadı"
+              }</p>
+              
+              <div class="tracking-steps">
+                <div class="tracking-line"></div>
+                <div class="tracking-progress" style="width: ${calculateProgress(
+                  order.status
+                )}%"></div>
+                
+                ${createTrackingSteps(order.status)}
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            ${
+              order.status.toLowerCase() === "delivered"
+                ? `
+              <button class="action-button secondary-button" onclick="openReturnModal('${order.id}')">İade Talebi</button>
+            `
+                : ""
+            }
+            ${
+              order.status.toLowerCase() === "pending"
+                ? `
+              <button class="action-button secondary-button" onclick="cancelOrder('${order.id}')">Siparişi İptal Et</button>
+            `
+                : ""
+            }
+            <button class="action-button primary-button" onclick="window.location.href='order-confirmation.html?id=${
+              order.id
+            }'">Detayları Görüntüle</button>
+          </div>
+        </div>
+      `
+              )
+              .join("")
+          : '<p style="text-align: center">Henüz siparişiniz bulunmuyor.</p>';
+      }
+
+      function calculateProgress(status) {
+        const steps = ["pending", "processing", "shipped", "delivered"];
+        const currentStep = steps.indexOf(status.toLowerCase());
+        return currentStep >= 0 ? (currentStep / (steps.length - 1)) * 100 : 0;
+      }
+
+      function createTrackingSteps(status) {
+        const steps = [
+          { key: "pending", label: "Onaylandı" },
+          { key: "processing", label: "Hazırlanıyor" },
+          { key: "shipped", label: "Kargoda" },
+          { key: "delivered", label: "Teslim Edildi" },
+        ];
+
+        const currentStepIndex = steps.findIndex(
+          (step) => step.key === status.toLowerCase()
+        );
+
+        return steps
+          .map(
+            (step, index) => `
+        <div class="step ${step.key} ${index <= currentStepIndex ? "completed" : ""}">
+          <div class="step-dot"></div>
+          <div class="step-label">${step.label}</div>
+        </div>
+      `
+          )
+          .join("");
+      }
+
+      function calculateSubtotal(products) {
+        return products.reduce(
+          (total, product) => total + product.price * product.quantity,
+          0
+        );
+      }
+
+      let currentOrderId = null;
+
+      function openReturnModal(orderId) {
+        currentOrderId = orderId;
+        document.getElementById("return-modal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("return-modal").style.display = "none";
+        document.getElementById("return-reason").value = "";
+        document.getElementById("return-details").value = "";
+        currentOrderId = null;
+      }
+
+      async function submitReturn() {
+        const reason = document.getElementById("return-reason").value;
+        const details = document.getElementById("return-details").value;
+
+        if (!reason) {
+          alert("Lütfen bir iade sebebi seçin.");
+          return;
+        }
+
+        if (!details) {
+          alert("Lütfen detaylı açıklama yazın.");
+          return;
+        }
+
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          orders = orders.map((order) => {
+            if (order.id === currentOrderId) {
+              return {
+                ...order,
+                status: "returned",
+                return_details: {
+                  reason,
+                  details,
+                  date: new Date().toLocaleDateString("tr-TR"),
+                },
+              };
+            }
+            return order;
+          });
+
+          localStorage.setItem("orders", JSON.stringify(orders));
+          renderOrders();
+          closeModal();
+          alert(
+            "İade talebiniz alınmıştır. En kısa sürede sizinle iletişime geçeceğiz."
+          );
+        } catch (error) {
+          alert(
+            "İade talebi gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
+          );
+        }
+      }
+
+      async function cancelOrder(orderId) {
+        if (!confirm("Siparişi iptal etmek istediğinize emin misiniz?")) return;
+
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          orders = orders.map((order) => {
+            if (order.id === orderId) {
+              return { ...order, status: "cancelled" };
+            }
+            return order;
+          });
+
+          localStorage.setItem("orders", JSON.stringify(orders));
+          renderOrders();
+          alert("Siparişiniz iptal edilmiştir.");
+        } catch (error) {
+          alert(
+            "Sipariş iptal edilirken bir hata oluştu. Lütfen tekrar deneyin."
+          );
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        renderOrders();
+        updateCartCount();
+      });
+    </script>
+  </body>
+</html>

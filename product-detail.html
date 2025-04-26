@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ürün Detayı</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .header-icons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 99;
+      }
+
+      .header-icons .icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+      }
+
+      .header-icons .badge {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background-color: #ff4b5c;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ff4e50, #f9d423, #24c6dc, #5433ff);
+        background-size: 400% 400%;
+        animation: bgAnim 12s ease infinite;
+        font-family: "Poppins", sans-serif;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      @keyframes bgAnim {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      header {
+        padding: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(6px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .back-btn {
+        margin-left: 20px;
+        padding: 8px 14px;
+        border: 2px solid white;
+        background: transparent;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+      }
+
+      .product-container {
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+      }
+
+      .product-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        width: 100%;
+        max-width: 800px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
+
+      .product-card img {
+        width: 200px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .product-card h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .price-section {
+        margin: 10px 0;
+      }
+
+      .old-price {
+        text-decoration: line-through;
+        color: #ccc;
+        margin-right: 10px;
+      }
+
+      .new-price {
+        font-size: 22px;
+        color: #ffdc60;
+        font-weight: bold;
+      }
+
+      .discount {
+        color: #ff4b5c;
+        font-weight: bold;
+      }
+
+      .color-select {
+        margin: 10px 0;
+      }
+
+      .color-select label {
+        margin: 0 10px;
+        cursor: pointer;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .rating {
+        margin: 10px 0;
+      }
+
+      .stars {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+      }
+
+      .star {
+        font-size: 28px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+
+      .star.selected {
+        color: gold;
+      }
+
+      .comment-form {
+        margin-top: 20px;
+      }
+
+      .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        resize: none;
+        font-family: "Poppins";
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        backdrop-filter: blur(4px);
+        margin-bottom: 10px;
+      }
+
+      .comment-form button {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        background: #ff4b5c;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .comments {
+        text-align: left;
+        margin-top: 20px;
+      }
+
+      .comment {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      .share {
+        margin-top: 20px;
+      }
+
+      .share a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 15px;
+        color: #ccc;
+      }
+
+      .home-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .home-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .home-button img {
+        width: 20px;
+        height: 20px;
+        filter: brightness(0) invert(1);
+      }
+    </style>
+  </head>
+  <body>
+    <a href="homePage.html" class="home-button">
+      <img src="icons/homePages.png" alt="Ana Sayfa">
+      Ana Sayfa
+    </a>
+
+    <div class="product-container">
+      <div class="product-card">
+        <img src="./icons/box.png" alt="Ürün" />
+        <h2>Örnek Ürün Adı</h2>
+        <p>Modern tasarımıyla öne çıkan, kaliteli ve kullanışlı ürün.</p>
+
+        <div class="price-section">
+          <span class="old-price">₺199,99</span>
+          <span class="new-price">₺149,99</span>
+          <span class="discount">-%25</span>
+        </div>
+
+        <div class="color-select">
+          <label><input type="radio" name="color" checked /> Siyah</label>
+          <label><input type="radio" name="color" /> Kırmızı</label>
+          <label><input type="radio" name="color" /> Mavi</label>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" onclick="addToCart()">Sepete Ekle</button>
+          <button class="btn" onclick="addToFavorites()">
+            Favorilere Ekle
+          </button>
+        </div>
+
+        <div class="rating">
+          <div class="stars" id="starRating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+          <div id="ratingValue">Puan verin</div>
+        </div>
+
+        <div class="comment-form">
+          <textarea
+            id="commentText"
+            rows="3"
+            placeholder="Yorumunuzu yazın..."
+          ></textarea>
+          <button onclick="addComment()">Yorum Yap</button>
+        </div>
+
+        <div class="comments">
+          <h4>Kullanıcı Yorumları</h4>
+          <div id="commentList"></div>
+        </div>
+
+        <div class="share">
+          <h4>Paylaş:</h4>
+          <a
+            href="https://twitter.com/intent/tweet?text=Harika+bir+ürün!"
+            target="_blank"
+            >🐦 Twitter</a
+          >
+          <a
+            href="https://wa.me/?text=Bu+ürüne+bak:+product-detail.html"
+            target="_blank"
+            >📱 WhatsApp</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <footer>&copy; 2025 Alışveriş Paneli | Tüm hakları saklıdır.</footer>
+
+    <script>
+      function goBack() {
+        window.location.href = "profile.html";
+      }
+
+      const stars = document.querySelectorAll(".star");
+      const ratingValue = document.getElementById("ratingValue");
+      let selectedRating = 0;
+
+      stars.forEach((star) => {
+        star.addEventListener("click", () => {
+          selectedRating = star.getAttribute("data-value");
+          localStorage.setItem("puan", selectedRating);
+          stars.forEach((s) => s.classList.remove("selected"));
+          for (let i = 0; i < selectedRating; i++) {
+            stars[i].classList.add("selected");
+          }
+          ratingValue.textContent = `${selectedRating} yıldız verildi`;
+        });
+      });
+
+      function addComment() {
+        const commentInput = document.getElementById("commentText");
+        const comment = commentInput.value.trim();
+        if (comment) {
+          const stored = localStorage.getItem("yorumlar");
+          const yorumlar = stored ? JSON.parse(stored) : [];
+          const now = new Date().toLocaleString("tr-TR");
+          yorumlar.unshift({ text: comment, time: now });
+          localStorage.setItem("yorumlar", JSON.stringify(yorumlar));
+          displayComments();
+          commentInput.value = "";
+        } else {
+          alert("Lütfen yorum yazın.");
+        }
+      }
+
+      function displayComments() {
+        const stored = localStorage.getItem("yorumlar");
+        const yorumlar = stored ? JSON.parse(stored) : [];
+        const list = document.getElementById("commentList");
+        list.innerHTML = "";
+
+        yorumlar.forEach((item) => {
+          const newComment = document.createElement("div");
+          newComment.className = "comment";
+          newComment.innerHTML = `${item.text}<br><small>${item.time}</small>`;
+          list.appendChild(newComment);
+        });
+      }
+
+     
+      function addToCart() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push("örnek-ürün");
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("Ürün sepete eklendi!");
+      }
+
+     
+      function addToFavorites() {
+        const fav = JSON.parse(localStorage.getItem("favorites")) || [];
+        fav.push("örnek-ürün");
+        localStorage.setItem("favorites", JSON.stringify(fav));
+        alert("Ürün favorilere eklendi!");
+      }
+
+     
+      window.onload = function () {
+        displayComments();
+        const storedRating = localStorage.getItem("puan");
+        if (storedRating) {
+          selectedRating = storedRating;
+          for (let i = 0; i < selectedRating; i++) {
+            stars[i].classList.add("selected");
+          }
+          ratingValue.textContent = `${selectedRating} yıldız verildi`;
+        }
+      };
+
+      function goToCart() {
+        window.location.href = "cart.html";
+      }
+
+      function goToProfile() {
+        window.location.href = "profile.html";
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const count = cart.length;
+        const badge = document.getElementById("cartCount");
+        if (badge) badge.innerText = count;
+      }
+
+      window.onload = function () {
+        updateCartCount();
+
+        // Daha önce var olan işlemler
+        if (typeof displayComments === "function") displayComments();
+
+        const storedRating = localStorage.getItem("puan");
+        if (storedRating) {
+          selectedRating = storedRating;
+          for (let i = 0; i < selectedRating; i++) {
+            stars[i].classList.add("selected");
+          }
+          ratingValue.textContent = `${selectedRating} yıldız verildi`;
+        }
+      };
+    </script>
+  </body>
+</html>

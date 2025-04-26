@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="E-Ticaret kullanıcı profili sayfası - Kişisel bilgilerinizi yönetin, adreslerinizi düzenleyin ve siparişlerinizi takip edin."
+    />
+    <meta
+      name="keywords"
+      content="kullanıcı profili, hesap yönetimi, e-ticaret profil, adres yönetimi"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="E-Ticaret" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kullanıcı Profili | E-Ticaret" />
+    <meta
+      property="og:description"
+      content="E-Ticaret kullanıcı profili sayfası - Kişisel bilgilerinizi yönetin, adreslerinizi düzenleyin ve siparişlerinizi takip edin."
+    />
+    <meta property="og:site_name" content="E-Ticaret" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Kullanıcı Profili | E-Ticaret" />
+    <meta
+      name="twitter:description"
+      content="E-Ticaret kullanıcı profili sayfası - Kişisel bilgilerinizi yönetin, adreslerinizi düzenleyin ve siparişlerinizi takip edin."
+    />
+
+    <title>Kullanıcı Profili | E-Ticaret</title>
+
+    
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      as="style"
+    />
+    <link rel="preload" href="css/header.css" as="style" />
+    <link rel="preload" href="js/utils.js" as="script" />
+
+    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="global.css" />
+
+    
+    <meta property="og:title" content="Kullanıcı Profili | E-Ticaret" />
+    <meta
+      property="og:description"
+      content="E-Ticaret kullanıcı profili sayfası - Kişisel bilgilerinizi yönetin"
+    />
+    <meta property="og:type" content="website" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ff4e50, #f9d423, #24c6dc, #5433ff);
+        background-size: 400% 400%;
+        animation: bgAnimation 15s ease infinite;
+        font-family: "Poppins", sans-serif;
+        color: white;
+      }
+
+      @keyframes bgAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .header-icons {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 99;
+      }
+
+      .header-icons .icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+        transition: transform 0.3s ease;
+      }
+
+      .header-icons .icon:hover {
+        transform: scale(1.1);
+      }
+
+      .header-icons .badge {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background-color: #ff4b5c;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .back-button i {
+        font-size: 1.8rem;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .profile-container {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 30px;
+      }
+
+      .profile-sidebar {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .profile-main {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .profile-avatar-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+      }
+
+      .profile-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .avatar-edit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(135deg, #ff4b5c, #ff3547);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 75, 92, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .avatar-edit img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+        transition: transform 0.3s ease;
+      }
+
+      .avatar-edit:hover {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, #ff3547, #ff1a2e);
+        box-shadow: 0 6px 20px rgba(255, 75, 92, 0.6);
+      }
+
+      .avatar-edit:hover img {
+        transform: scale(1.1);
+      }
+
+      .profile-name {
+        font-size: 1.8rem;
+        color: #fff;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .profile-email {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        margin: 0.5rem 0;
+      }
+
+      .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .stat-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+      }
+
+      .stat-item:hover {
+        transform: translateY(-5px);
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .profile-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        transition: transform 0.3s ease;
+      }
+
+      .profile-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-title::before {
+        content: '';
+        width: 4px;
+        height: 20px;
+        background: #ff4b5c;
+        border-radius: 2px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .info-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .info-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .info-label {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .info-value {
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .profile-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .edit-profile-btn,
+      .change-password-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .edit-profile-btn:hover,
+      .change-password-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .edit-profile-btn:active,
+      .change-password-btn:active {
+        transform: translateY(0);
+      }
+
+      @media (max-width: 900px) {
+        .profile-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="homePage.html" class="home-button">
+      <img src="icons/homePages.png" alt="Ana Sayfa">
+      Ana Sayfa
+    </a>
+    
+    <div class="header-icons">
+      <div class="icon" onclick="goToFavorites()">❤️</div>
+      <div class="icon" onclick="goToCart()">🛒<span class="badge" id="cartCount">0</span></div>
+    </div>
+
+    <div class="profile-container">
+      <div class="profile-sidebar">
+        <div class="profile-avatar-container">
+          <img src="icons/default-profile.png" alt="Profil" class="profile-avatar" id="profileAvatar">
+          <div class="avatar-edit" onclick="editAvatar()">
+            <img src="icons/camera.png" alt="Fotoğraf Ekle">
+          </div>
+        </div>
+        <h1 class="profile-name">John Doe</h1>
+        <p class="profile-email" id="userEmail">Giriş yapılmamış</p>
+        
+        <div class="profile-stats">
+          <div class="stat-item">
+            <span class="stat-value">5</span>
+            <span class="stat-label">Sipariş</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">12</span>
+            <span class="stat-label">Favori</span>
+          </div>
+        </div>
+        
+        <div class="profile-buttons">
+          <button class="edit-profile-btn" onclick="editProfile()">
+            Profili Düzenle
+          </button>
+          <button class="change-password-btn" onclick="changePassword()">
+            Şifre Değiştir
+          </button>
+        </div>
+      </div>
+
+      <div class="profile-main">
+        <div class="profile-card">
+          <h2 class="section-title">Kişisel Bilgiler</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Ad Soyad</div>
+              <div class="info-value">John Doe</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">E-posta</div>
+              <div class="info-value">john.doe@example.com</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Telefon</div>
+              <div class="info-value">+90 555 123 4567</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Doğum Tarihi</div>
+              <div class="info-value">01.01.1990</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <h2 class="section-title">Adres Bilgileri</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Adres</div>
+              <div class="info-value">Örnek Mahallesi, Örnek Sokak No:1</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Şehir</div>
+              <div class="info-value">İstanbul</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">İlçe</div>
+              <div class="info-value">Kadıköy</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Posta Kodu</div>
+              <div class="info-value">34000</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <h2 class="section-title">Hesap Ayarları</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Dil</div>
+              <div class="info-value">Türkçe</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Bildirimler</div>
+              <div class="info-value">Açık</div>
+            </div>
+           
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script>
+      function goToFavorites() {
+        window.location.href = "favorites.html";
+      }
+
+      function goToCart() {
+        window.location.href = "cart.html";
+      }
+
+      function editProfile() {
+        const newName = prompt("Yeni adınızı girin:", document.querySelector('.profile-name').textContent);
+        if (newName) {
+          document.querySelector('.profile-name').textContent = newName;
+          document.querySelector('.info-item:first-child .info-value').textContent = newName;
+          localStorage.setItem('userName', newName);
+        }
+
+        const newEmail = prompt("Yeni e-posta adresinizi girin:", document.getElementById('userEmail').textContent);
+        if (newEmail) {
+          document.getElementById('userEmail').textContent = newEmail;
+          document.querySelector('.info-item:nth-child(2) .info-value').textContent = newEmail;
+          localStorage.setItem('userEmail', newEmail);
+        }
+
+        const newPhone = prompt("Yeni telefon numaranızı girin:", document.querySelector('.info-item:nth-child(3) .info-value').textContent);
+        if (newPhone) {
+          document.querySelector('.info-item:nth-child(3) .info-value').textContent = newPhone;
+          localStorage.setItem('userPhone', newPhone);
+        }
+
+        const newBirthDate = prompt("Yeni doğum tarihinizi girin:", document.querySelector('.info-item:nth-child(4) .info-value').textContent);
+        if (newBirthDate) {
+          document.querySelector('.info-item:nth-child(4) .info-value').textContent = newBirthDate;
+          localStorage.setItem('userBirthDate', newBirthDate);
+        }
+
+        const newAddress = prompt("Yeni adresinizi girin:", document.querySelector('.info-item:nth-child(5) .info-value').textContent);
+        if (newAddress) {
+          document.querySelector('.info-item:nth-child(5) .info-value').textContent = newAddress;
+          localStorage.setItem('userAddress', newAddress);
+        }
+
+        const newCity = prompt("Yeni şehrinizi girin:", document.querySelector('.info-item:nth-child(6) .info-value').textContent);
+        if (newCity) {
+          document.querySelector('.info-item:nth-child(6) .info-value').textContent = newCity;
+          localStorage.setItem('userCity', newCity);
+        }
+
+        const newDistrict = prompt("Yeni ilçenizi girin:", document.querySelector('.info-item:nth-child(7) .info-value').textContent);
+        if (newDistrict) {
+          document.querySelector('.info-item:nth-child(7) .info-value').textContent = newDistrict;
+          localStorage.setItem('userDistrict', newDistrict);
+        }
+
+        const newPostalCode = prompt("Yeni posta kodunuzu girin:", document.querySelector('.info-item:nth-child(8) .info-value').textContent);
+        if (newPostalCode) {
+          document.querySelector('.info-item:nth-child(8) .info-value').textContent = newPostalCode;
+          localStorage.setItem('userPostalCode', newPostalCode);
+        }
+      }
+
+      function changePassword() {
+        const currentPassword = prompt("Mevcut şifrenizi girin:");
+        if (!currentPassword) return;
+
+        const newPassword = prompt("Yeni şifrenizi girin:");
+        if (!newPassword) return;
+
+        const confirmPassword = prompt("Yeni şifrenizi tekrar girin:");
+        if (newPassword !== confirmPassword) {
+          alert("Şifreler eşleşmiyor!");
+          return;
+        }
+
+        alert("Şifreniz başarıyla değiştirildi!");
+      }
+
+      function editAvatar() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+              const profileAvatar = document.getElementById('profileAvatar');
+              profileAvatar.src = event.target.result;
+              localStorage.setItem('profileImage', event.target.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+        input.click();
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const count = cart.length;
+        const badge = document.getElementById("cartCount");
+        if (badge) badge.innerText = count;
+      }
+
+      function updateLastLoginDate() {
+        const now = new Date();
+        const formattedDate = now.toLocaleString('tr-TR');
+        localStorage.setItem('lastLoginDate', formattedDate);
+        const lastLoginValue = document.querySelector('.info-item:last-child .info-value');
+        if (lastLoginValue) {
+          lastLoginValue.innerText = formattedDate;
+        }
+      }
+
+      function loadUserData() {
+        const userName = localStorage.getItem('userName');
+        console.log("Kullanıcı adı:", userName);
+        if (userName) {
+          document.querySelector('.profile-name').textContent = userName;
+          document.querySelector('.info-item:first-child .info-value').textContent = userName;
+        }
+
+        const userEmail = localStorage.getItem('userEmail');
+        console.log("E-posta:", userEmail);
+        if (userEmail) {
+          document.getElementById('userEmail').textContent = userEmail;
+          document.querySelector('.info-item:nth-child(2) .info-value').textContent = userEmail;
+        }
+
+        const userPhone = localStorage.getItem('userPhone');
+        console.log("Telefon:", userPhone);
+        if (userPhone) {
+          document.querySelector('.info-item:nth-child(3) .info-value').textContent = userPhone;
+        }
+
+        const userBirthDate = localStorage.getItem('userBirthDate');
+        console.log("Doğum tarihi:", userBirthDate);
+        if (userBirthDate) {
+          document.querySelector('.info-item:nth-child(4) .info-value').textContent = userBirthDate;
+        }
+
+        const userAddress = localStorage.getItem('userAddress');
+        console.log("Adres:", userAddress);
+        if (userAddress) {
+          document.querySelector('.info-item:nth-child(5) .info-value').textContent = userAddress;
+        }
+
+        const userCity = localStorage.getItem('userCity');
+        console.log("Şehir:", userCity);
+        if (userCity) {
+          document.querySelector('.info-item:nth-child(6) .info-value').textContent = userCity;
+        }
+
+        const userDistrict = localStorage.getItem('userDistrict');
+        console.log("İlçe:", userDistrict);
+        if (userDistrict) {
+          document.querySelector('.info-item:nth-child(7) .info-value').textContent = userDistrict;
+        }
+
+        const userPostalCode = localStorage.getItem('userPostalCode');
+        console.log("Posta kodu:", userPostalCode);
+        if (userPostalCode) {
+          document.querySelector('.info-item:nth-child(8) .info-value').textContent = userPostalCode;
+        }
+
+        const savedImage = localStorage.getItem('profileImage');
+        console.log("Profil resmi:", savedImage);
+        const profileAvatar = document.getElementById('profileAvatar');
+        if (savedImage && profileAvatar) {
+          profileAvatar.src = savedImage;
+        }
+
+        updateLastLoginDate();
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log("Sayfa yüklendi");
+        updateCartCount();
+        loadUserData();
+        
+        console.log("LocalStorage verileri:", {
+          userName: localStorage.getItem('userName'),
+          userEmail: localStorage.getItem('userEmail'),
+          userPhone: localStorage.getItem('userPhone'),
+          userBirthDate: localStorage.getItem('userBirthDate'),
+          userAddress: localStorage.getItem('userAddress'),
+          userCity: localStorage.getItem('userCity'),
+          userDistrict: localStorage.getItem('userDistrict'),
+          userPostalCode: localStorage.getItem('userPostalCode'),
+          profileImage: localStorage.getItem('profileImage')
+        });
+      });
+    </script>
+  </body>
+</html>
